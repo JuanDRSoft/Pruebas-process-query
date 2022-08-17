@@ -1,3 +1,4 @@
+const axios = require('axios');
 const IPN = require('../models/IPN');
 const helpers = require('./helpers');
 
@@ -52,3 +53,4 @@ function index(req, res) {
 }
 
 module.exports = { create, index };
+
