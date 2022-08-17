@@ -18,12 +18,14 @@ async function create(req, res, next) {
       });
     });
 
-  if (req.body.resource.includes('merchant_orders')) {
+  var resource = req.body.resource;
+  if (resource.includes('merchant_orders')) {
     const invoice = await axios.get(
       req.body.resource +
         '?access_token=APP_USR-3358235138150118-080815-8185f95057c925ac403db991da834eb0-1175458796'
     );
-    if (invoice.data.status.includes('closed')) {
+    var status = invoice.data.status;
+    if (status.includes('closed')) {
       const bodyData = {
         paymentDate: invoice.data.date_created,
         status: invoice.data.payments[0].status,
