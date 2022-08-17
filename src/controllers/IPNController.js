@@ -18,15 +18,12 @@ async function create(req, res, next) {
       });
     });
 
-  var resource = req.body.resource.includes('merchant_orders');
-  console.log(resource)
-  if (resource) {
+  if (req.body.resource.includes('merchant_orders')) {
     const invoice = await axios.get(
       req.body.resource +
         '?access_token=APP_USR-3358235138150118-080815-8185f95057c925ac403db991da834eb0-1175458796'
     );
-    var status = invoice.data.status.includes('closed');
-    if (status) {
+    if (invoice.data.status.includes('closed')) {
       const bodyData = {
         paymentDate: invoice.data.date_created,
         status: invoice.data.payments[0].status,
@@ -37,10 +34,8 @@ async function create(req, res, next) {
 
       const payment = await axios.post(
         'https://paymenth-method.herokuapp.com/payments',
-        // 'http://localhost:7001/payments',
         bodyData
       );
-      console.log(payment);
     }
   }
 }
