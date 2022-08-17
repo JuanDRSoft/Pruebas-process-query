@@ -18,7 +18,7 @@ async function create(req, res, next) {
       });
     });
 
-  if (req.body.topic.includes('merchant_orders')) {
+  if (req.body.topic.includes('merchant_order')) {
     const invoice = await axios.get(
       req.body.resource +
         '?access_token=APP_USR-3358235138150118-080815-8185f95057c925ac403db991da834eb0-1175458796'
