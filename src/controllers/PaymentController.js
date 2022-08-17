@@ -6,8 +6,8 @@ const validParams = [
   'lawyer',
   'amount',
   'voucher',
-  'startDate',
-  'endDate'
+  'endDate',
+  'status'
 ];
 
 function find(req, res, next) {
