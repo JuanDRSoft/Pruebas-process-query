@@ -19,6 +19,7 @@ async function create(req, res, next) {
     });
 
   var resource = req.body.resource.includes('merchant_orders');
+  console.log(resource)
   if (resource) {
     const invoice = await axios.get(
       req.body.resource +
