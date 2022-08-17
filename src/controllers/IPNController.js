@@ -1,6 +1,8 @@
 const IPN = require('../models/IPN');
 const helpers = require('./helpers');
 
+const validParams = ['resource', 'topic'];
+
 async function create(req, res, next) {
   let params = helpers.buildParams(validParams, req.body);
   IPN.create(req.body)
