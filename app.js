@@ -20,7 +20,7 @@ dotenv.config();
 const lawyer = require('./src/routes/Lawyer');
 const process = require('./src/routes/Process');
 const billing = require('./src/routes/Billing');
-const payment = require('./src/routes/Payment');
+const payments = require('./src/routes/Payment');
 const ipn = require('./src/routes/IPN');
 
 // view engine setup
@@ -37,7 +37,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/lawyer', lawyer);
 app.use('/process', process);
 app.use('/billing', billing);
-// app.use('/payment', payment);
+app.use('/payments', payments);
 app.use('/IPN', ipn);
 
 app.use('/', indexRouter);
