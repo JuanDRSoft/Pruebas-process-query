@@ -27,7 +27,7 @@ async function create(req, res, next) {
       if (invoice.data.status.includes('closed')) {
         const bodyData = {
           paymentDate: invoice.data.date_created,
-          status: invoice.data.status,
+          status: 'approved',
           lawyer: invoice.data.items[0].id,
           amount: invoice.data.total_amount,
           voucher: invoice.data.id
