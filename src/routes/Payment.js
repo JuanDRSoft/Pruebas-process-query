@@ -8,7 +8,7 @@ router.route('/').get(PaymentController.index).post(PaymentController.create);
 
 router
   .route('/:id')
-  .get( PaymentController.find,PaymentController.show)
+  .get(PaymentController.find,PaymentController.show)
   .put(PaymentController.find, PaymentController.update)
   .delete(PaymentController.find, PaymentController.destroy);
 
