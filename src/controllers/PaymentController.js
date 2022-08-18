@@ -86,7 +86,7 @@ async function create(req, res, next) {
    // return res.status(400).json({ msg: 'El proceso ya esta registrado' });
   //}
 
-  Payment.create(params)
+  Payment.create(req.body)
     .then((payment) => {
       res.json(payment);
       req.payment = payment;
