@@ -80,11 +80,11 @@ function show(req, res) {
 async function create(req, res, next) {
   let params = helpers.buildParams(validParams, req.body);
 
-  let payment = await Payment.findOne({ filingNumber: params.filingNumber });
+  //let payment = await Payment.findOne({ filingNumber: params.filingNumber });
 
-  if (payment) {
-    return res.status(400).json({ msg: 'El proceso ya esta registrado' });
-  }
+  //if (payment) {
+   // return res.status(400).json({ msg: 'El proceso ya esta registrado' });
+  //}
 
   Payment.create(params)
     .then((payment) => {
