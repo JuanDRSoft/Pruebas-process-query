@@ -34,7 +34,7 @@ async function create(req, res, next) {
         };
 
         const payment = await axios.post(
-           'https://paymenth-method.herokuapp.com/payments',{},bodyData
+           'https://paymenth-method.herokuapp.com/payments',bodyData
         );
         console.log(payment.data);
       }
