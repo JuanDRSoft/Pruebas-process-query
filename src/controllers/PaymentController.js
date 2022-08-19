@@ -21,17 +21,27 @@ function find(req, res, next) {
     });
 }
 function findByLawyer(req, res, next) {
-  const page = req.query.page || 1;
-  const limit = 10;
-
-  Payment.paginate(
-    { lawyer: req.usuario },
-    { limit, page, sort: { lastUpdateDate: -1 } },
-    function (err, result) {
+  const { lawyer } = req.params;
+  Payment.find({ lawyer })
+    .then((payment) => {
       req.payment = payment;
-      res.json(result);
-    }
-  );
+      next();
+    })
+    .catch((err) => {
+      next(err);
+    });
+
+  // const page = req.query.page || 1;
+  // const limit = 10;
+
+  // Payment.paginate(
+  //   { lawyer: req.usuario },
+  //   { limit, page, sort: { lastUpdateDate: -1 } },
+  //   function (err, result) {
+  //     req.payment = payment;
+  //     res.json(result);
+  //   }
+  // );
 }
 
 function findByLawyerCount(req, res, next) {
@@ -80,13 +90,13 @@ function show(req, res) {
 async function create(req, res, next) {
   let params = helpers.buildParams(validParams, req.body);
 
-  //let payment = await Payment.findOne({ filingNumber: params.filingNumber });
+  // let payment = await Payment.findOne({ filingNumber: params.filingNumber });
 
-  //if (payment) {
-   // return res.status(400).json({ msg: 'El proceso ya esta registrado' });
-  //}
+  // if (payment) {
+  //   return res.status(400).json({ msg: 'El proceso ya esta registrado' });
+  // }
 
-  Payment.create(req.body)
+  Payment.create(params)
     .then((payment) => {
       res.json(payment);
       req.payment = payment;
