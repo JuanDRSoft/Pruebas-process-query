@@ -22,10 +22,20 @@ function find(req, res, next) {
 }
 function findByLawyer(req, res, next) {
   const { lawyer } = req.params;
+
   Payment.find({ lawyer })
     .then((payment) => {
       req.payment = payment;
       next();
+
+      payment.map(async (dc) => {
+        const pro = await Payment.findById(dc._id);
+        const now = new Date();
+        if (now.getTime() > dc.endDate.getTime()) {
+          pro.status = 'beaten';
+          await pro.save();
+        }
+      });
     })
     .catch((err) => {
       next(err);
