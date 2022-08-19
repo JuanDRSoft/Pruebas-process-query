@@ -25,12 +25,18 @@ async function create(req, res, next) {
           '?access_token=APP_USR-3358235138150118-080815-8185f95057c925ac403db991da834eb0-1175458796'
       );
       if (invoice.data.status.includes('closed')) {
+        let now = new Date();
+        let vigente = 1000 * 60 * 60 * 24 * 30;
+        let fecha = now.getTime() + vigente;
+        let endDate = new Date(fecha);
+
         const bodyData = {
           paymentDate: invoice.data.date_created,
           status: invoice.data.payments[0].status,
           lawyer: invoice.data.items[0].id,
           amount: invoice.data.total_amount,
-          voucher: invoice.data.id
+          voucher: invoice.data.id,
+          endDate: endDate
         };
 
         const payment = await axios.post(
