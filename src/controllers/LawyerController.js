@@ -1,3 +1,4 @@
+const axios = require('axios');
 const Lawyer = require('../models/Lawyer');
 const helpers = require('./helpers');
 
@@ -36,8 +37,9 @@ function index(req, res) {
 function show(req, res) {
   res.json(req.lawyer);
 }
-function create(req, res, next) {
+async function create(req, res, next) {
   let params = helpers.buildParams(validParams, req.body);
+
   Lawyer.create(params)
     .then((lawyer) => {
       res.json(lawyer);
@@ -49,6 +51,31 @@ function create(req, res, next) {
         error
       });
     });
+
+  const User = await Lawyer.findOne({ email: req.body.email });
+
+  let now = new Date();
+  let vigente = 1000 * 60 * 60 * 24 * 30;
+  let fecha = now.getTime() + vigente;
+  let endDate = new Date(fecha);
+
+  const { id } = User;
+
+  const bodyData = {
+    paymentDate: now,
+    status: 'approved',
+    lawyer: id,
+    amount: 0,
+    voucher: 0000000001,
+    endDate: endDate
+  };
+
+  const payment = await axios.post(
+    // 'https://paymenth-method.herokuapp.com/payments',
+    'http://localhost:7001/payments',
+    bodyData
+  );
+  console.log(payment.data);
 }
 function update(req, res) {
   req.lawyer = Object.assign(req.lawyer, req.body);
