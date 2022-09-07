@@ -59,12 +59,12 @@ async function create(req, res, next) {
   let fecha = now.getTime() + vigente;
   let endDate = new Date(fecha);
 
-  const { id } = User;
+  const { _id } = User;
 
   const bodyData = {
     paymentDate: now,
     status: 'approved',
-    lawyer: id,
+    lawyer: _id,
     amount: 0,
     voucher: 0000000001,
     endDate: endDate
