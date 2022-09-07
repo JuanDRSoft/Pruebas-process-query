@@ -52,7 +52,7 @@ async function create(req, res, next) {
       });
     });
 
-  const User = Lawyer.findOne({ email: req.body.email });
+  const User = await Lawyer.findOne({ email: req.body.email });
 
   let now = new Date();
   let vigente = 1000 * 60 * 60 * 24 * 30;
