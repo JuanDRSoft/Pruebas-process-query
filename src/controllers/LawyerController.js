@@ -15,8 +15,8 @@ function find(req, res, next) {
     });
 }
 function findByEmail(req, res, next) {
-  let { email } = helpers.buildParams(validParams, req.body);
-  Lawyer.findOne({ email: email })
+  let { email,uid } = helpers.buildParams(validParams, req.body);
+  Lawyer.findOne({ email: email,uid:uid })
     .then((lawyer) => {
       req.lawyer = lawyer;
       res.json(lawyer);
