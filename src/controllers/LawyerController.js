@@ -51,31 +51,6 @@ async function create(req, res, next) {
         error
       });
     });
-
-  const User = await Lawyer.findOne({ email: req.body.email });
-
-  let now = new Date();
-  let vigente = 1000 * 60 * 60 * 24 * 30;
-  let fecha = now.getTime() + vigente;
-  let endDate = new Date(fecha);
-
-  
-
-  const bodyData = {
-    paymentDate: now,
-    status: 'approved',
-    lawyer: User._id,
-    amount: 0,
-    voucher: 0000000001,
-    endDate: endDate
-  };
-
-  const payment = await axios.post(
-    'https://paymenth-method.herokuapp.com/payments',
-    //'http://localhost:7001/payments',
-    bodyData
-  );
-  console.log(payment.data);
 }
 function update(req, res) {
   req.lawyer = Object.assign(req.lawyer, req.body);
