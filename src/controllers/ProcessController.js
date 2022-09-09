@@ -63,7 +63,7 @@ function findByLawyer(req, res, next) {
   Process.paginate(
     {
       lawyer: req.usuario,
-      filingNumber: { $regex: req.query.search, $options: '-i' },
+      sujetosProcesales: { $regex: req.query.search, $options: '-i' },
       state: filterSelected
     },
     { limit, page, sort: { lastUpdateDate: -1 } },
