@@ -53,7 +53,7 @@ function findByLawyer(req, res, next) {
 
   console.log(req.query);
 
-  const { selectedOrderOption } = req.query;
+  const { selectedOrderOption, filter } = req.query;
 
   const filterSelected =
     selectedOrderOption === 'activos' || selectedOrderOption === ''
@@ -61,11 +61,26 @@ function findByLawyer(req, res, next) {
       : false;
 
   Process.paginate(
-    {
-      lawyer: req.usuario,
-      sujetosProcesales: { $regex: req.query.search, $options: '-i' },
-      state: filterSelected
-    },
+    filter === ''
+      ? {
+          lawyer: req.usuario,
+          despacho: { $regex: req.query.search, $options: ` - i` },
+          state: filterSelected
+        }
+      : null || filter === 'sujetoProcesal'
+      ? {
+          lawyer: req.usuario,
+          sujetosProcesales: { $regex: req.query.search, $options: ` - i` },
+          state: filterSelected
+        }
+      : null || filter === 'filingNumber'
+      ? {
+          lawyer: req.usuario,
+          filingNumber: { $regex: req.query.search, $options: ` - i` },
+          state: filterSelected
+        }
+      : null,
+
     { limit, page, sort: { lastUpdateDate: -1 } },
     function (err, result) {
       req.process = process;
@@ -116,7 +131,7 @@ async function create(req, res, next) {
   // let process = await Process.findOne({ filingNumber: params.filingNumber });
 
   // if (process) {
-   // return res.status(400).json({ msg: 'El proceso ya esta registrado' });
+  //   return res.status(400).json({ msg: 'El proceso ya esta registrado' });
   // }
 
   Process.create(params)
