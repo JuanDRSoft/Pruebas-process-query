@@ -15,7 +15,8 @@ const validParams = [
   'state',
   'notificationWeb',
   'notificationHome',
-  'ciudad'
+  'ciudad',
+  'link'
 ];
 
 function find(req, res, next) {
@@ -128,11 +129,14 @@ function show(req, res) {
 async function create(req, res, next) {
   let params = helpers.buildParams(validParams, req.body);
 
-  // let process = await Process.findOne({ filingNumber: params.filingNumber });
+  let process = await Process.findOne({
+    filingNumber: params.filingNumber,
+    lawyer: params.lawyer
+  });
 
-  // if (process) {
-  //   return res.status(400).json({ msg: 'El proceso ya esta registrado' });
-  // }
+  if (process) {
+    return res.status(400).json({ msg: 'El proceso ya esta registrado' });
+  }
 
   Process.create(params)
     .then((process) => {
