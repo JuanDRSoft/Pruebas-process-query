@@ -15,6 +15,11 @@ router
   .put(ProcessController.findByFilingNumber, ProcessController.update)
   .delete(ProcessController.find, ProcessController.destroy);
 
+router
+  .route('/anexos/:filingNumber/:lawyer')
+  .get(ProcessController.findLink, ProcessController.show)
+  .put(ProcessController.findLink, ProcessController.updateLink);
+
 router.route('/count/bylawyer').get(auth, ProcessController.findByLawyerCount);
 
 router.route('/updateState/:id').get(ProcessController.updateState);
