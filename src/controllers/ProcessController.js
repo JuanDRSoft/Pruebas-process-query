@@ -2,6 +2,7 @@ const Process = require('../models/Process');
 const Lawyer = require('../models/Lawyer');
 const helpers = require('./helpers');
 const axios = require('axios');
+const { rawListeners } = require('../models/Process');
 
 const validParams = [
   'filingNumber',
@@ -48,6 +49,21 @@ function findOne(req, res, next) {
       next(err);
     });
 }
+
+function findLink(req, res, next) {
+  Process.findOne({
+    filingNumber: req.params.filingNumber,
+    lawyer: req.params.lawyer
+  })
+    .then((process) => {
+      req.process = process;
+      next();
+    })
+    .catch((err) => {
+      next(err);
+    });
+}
+
 function findByLawyer(req, res, next) {
   const page = req.query.page || 1;
   const limit = 10;
@@ -150,7 +166,20 @@ async function create(req, res, next) {
       });
     });
 }
-function update(req, res) {
+async function updateLink(req, res) {
+  req.process.link = [...req.process.link, ...req.body.link];
+  req.process
+    .save()
+    .then((doc) => {
+      res.json(doc);
+    })
+    .catch((err) => {
+      console.log(err);
+      res.json(err);
+    });
+}
+
+async function update(req, res) {
   req.process = Object.assign(req.process, req.body);
   req.process
     .save()
@@ -261,5 +290,7 @@ module.exports = {
   updateStateAll,
   findByLawyerAll,
   findByLawyerCountUpdate,
-  processbyLawyerHome
+  processbyLawyerHome,
+  findLink,
+  updateLink
 };
