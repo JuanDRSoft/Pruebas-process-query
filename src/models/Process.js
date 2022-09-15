@@ -1,6 +1,11 @@
 const mongoose = require('mongoose');
 const mongoosePaginate = require('mongoose-paginate-v2');
 
+let linkSchema = new mongoose.Schema({
+  name: String,
+  url: String
+});
+
 let processShema = new mongoose.Schema({
   filingNumber: String,
   lastUpdateDate: Date,
@@ -29,11 +34,13 @@ let processShema = new mongoose.Schema({
   notificationHome: {
     type: Boolean,
     default: false
-  }
+  },
+  link: [linkSchema]
 });
 
 processShema.plugin(mongoosePaginate);
 
+module.exports = mongoose.model('Link', linkSchema);
 const Process = mongoose.model('Process', processShema);
 
 module.exports = Process;
