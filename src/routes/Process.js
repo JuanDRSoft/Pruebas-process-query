@@ -18,7 +18,8 @@ router
 router
   .route('/anexos/:filingNumber/:lawyer')
   .get(ProcessController.findLink, ProcessController.show)
-  .put(ProcessController.findLink, ProcessController.updateLink);
+  .put(ProcessController.findLink, ProcessController.updateLink)
+  .delete(ProcessController.findLink, ProcessController.deleteLink);
 
 router.route('/count/bylawyer').get(auth, ProcessController.findByLawyerCount);
 
