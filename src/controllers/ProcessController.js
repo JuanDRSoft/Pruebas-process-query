@@ -179,6 +179,22 @@ async function updateLink(req, res) {
     });
 }
 
+async function deleteLink(req, res) {
+  const name = req.query.name;
+  const index = req.process.link;
+  req.process.link = index.filter((i) => i.name !== name);
+  req.process
+    .save()
+    .then((doc) => {
+      res.json(doc);
+    })
+    .catch((err) => {
+      console.log(err);
+      res.json(err);
+    });
+  console.log(req.process.link);
+}
+
 async function update(req, res) {
   req.process = Object.assign(req.process, req.body);
   req.process
@@ -292,5 +308,6 @@ module.exports = {
   findByLawyerCountUpdate,
   processbyLawyerHome,
   findLink,
-  updateLink
+  updateLink,
+  deleteLink
 };
