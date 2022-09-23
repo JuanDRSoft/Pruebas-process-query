@@ -40,7 +40,9 @@ async function create(req, res, next) {
         };
 
         const payment = await axios.post(
-           'https://paymenth-method.herokuapp.com/payments',bodyData
+          // 'https://paymenth-method.herokuapp.com/payments',
+          'http://localhost:7001/payments',
+          bodyData
         );
         console.log(payment.data);
       }
@@ -59,4 +61,3 @@ function index(req, res) {
 }
 
 module.exports = { create, index };
-

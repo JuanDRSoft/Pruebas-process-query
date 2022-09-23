@@ -50,6 +50,16 @@ function findOne(req, res, next) {
     });
 }
 
+function findOneLawyer(req, res, next) {
+  Process.findOne({ filingNumber: req.params.id, lawyer: req.params.lawyer })
+    .then((process) => {
+      res.json(process);
+    })
+    .catch((err) => {
+      next(err);
+    });
+}
+
 function findLink(req, res, next) {
   Process.findOne({
     filingNumber: req.params.filingNumber,
@@ -220,7 +230,7 @@ function destroy(req, res) {
 }
 
 function updateState(req, res) {
-  Process.findOne({ filingNumber: req.params.id })
+  Process.findOne({ _id: req.params.id })
     .then((doc) => {
       doc.state = !doc.state;
       doc.save();
@@ -309,5 +319,6 @@ module.exports = {
   processbyLawyerHome,
   findLink,
   updateLink,
-  deleteLink
+  deleteLink,
+  findOneLawyer
 };
