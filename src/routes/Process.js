@@ -11,8 +11,8 @@ router
 
 router
   .route('/:id')
-  .get(auth, ProcessController.findOne)
-  .put(ProcessController.findByFilingNumber, ProcessController.update)
+  .get(auth, ProcessController.find, ProcessController.show)
+  .put(ProcessController.find, ProcessController.update)
   .delete(ProcessController.find, ProcessController.destroy);
 
 router
