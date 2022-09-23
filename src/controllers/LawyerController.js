@@ -1,5 +1,7 @@
 const axios = require('axios');
+const generateRandomString = require('../helpers/codePassword');
 const Lawyer = require('../models/Lawyer');
+const { forgotPasswordEmail } = require('../utils/sendEmail');
 const helpers = require('./helpers');
 
 const validParams = ['name', 'phone', 'email', 'uid'];
@@ -15,8 +17,8 @@ function find(req, res, next) {
     });
 }
 function findByEmail(req, res, next) {
-  let { email,uid } = helpers.buildParams(validParams, req.body);
-  Lawyer.findOne({ email: email,uid:uid })
+  let { email, uid } = helpers.buildParams(validParams, req.body);
+  Lawyer.findOne({ email: email, uid: uid })
     .then((lawyer) => {
       req.lawyer = lawyer;
       res.json(lawyer);
@@ -52,6 +54,7 @@ async function create(req, res, next) {
       });
     });
 }
+
 function update(req, res) {
   req.lawyer = Object.assign(req.lawyer, req.body);
   req.lawyer
@@ -76,4 +79,56 @@ function destroy(req, res) {
     });
 }
 
-module.exports = { index, show, create, update, destroy, find, findByEmail };
+async function forgotPassword(req, res) {
+  let { email } = helpers.buildParams(validParams, req.body);
+  const lawyer = await Lawyer.findOne({ email: email });
+
+  if (!lawyer) {
+    const error = new Error('El usuario no existe');
+    return res.status(400).json({ msg: error.message });
+  }
+
+  lawyer.uid = generateRandomString(10) || lawyer.uid;
+
+  try {
+    const lawyerAlmacenado = await lawyer.save();
+    forgotPasswordEmail(email, lawyerAlmacenado);
+    res.json({
+      msg: `Hemos enviado un email con el codigo de seguridad al correo: ${email}`
+    });
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+async function newPassword(req, res) {
+  let { email, uid } = helpers.buildParams(validParams, req.body);
+  const lawyer = await Lawyer.findOne({ email: email, uid: uid });
+
+  if (!lawyer) {
+    const error = new Error('Codigo de verificación incorrecto');
+    return res.status(400).json({ msg: error.message });
+  }
+
+  lawyer.uid = req.body.newUid || lawyer.uid;
+
+  try {
+    await lawyer.save();
+    res.json({
+      msg: 'Contraseña actualizada correctamente'
+    });
+  } catch (error) {
+    console.log(error);
+  }
+}
+module.exports = {
+  index,
+  show,
+  create,
+  update,
+  destroy,
+  find,
+  findByEmail,
+  forgotPassword,
+  newPassword
+};
