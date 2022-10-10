@@ -22,7 +22,7 @@ async function create(req, res, next) {
     if (req.body.topic.includes('merchant_order')) {
       const invoice = await axios.get(
         req.body.resource +
-          '?access_token=APP_USR-3358235138150118-080815-8185f95057c925ac403db991da834eb0-1175458796'
+          '?access_token=APP_USR-7428682502971385-101011-3bf5f0f6dee905d73e5d94f0b7a527a3-1214673637'
       );
       if (invoice.data.status.includes('closed')) {
         let now = new Date();
