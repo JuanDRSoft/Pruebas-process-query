@@ -48,7 +48,7 @@ router.post('/webhook', express.json(), function (req, res, next) {
     const conv = agent.conv();
     conv.ask(sslm);
     agent.add(conv);
-    agent.add(formatDate(response?.data?.despacho));
+    agent.add(`${formatDate(response?.data?.despacho)}`);
   }
 
   let intentMap = new Map();
