@@ -1,5 +1,6 @@
 const Lawyer = require('../models/Lawyer');
 const Process = require('../models/Process');
+const Event = require('../models/Event');
 
 const axios = require('axios');
 
@@ -44,6 +45,30 @@ const requestCaso = async () => {
           `https://consultaprocesos.ramajudicial.gov.co:448/api/v2/Proceso/Actuaciones/${idProceso}?pagina=1`
         );
 
+        const fechaInicial = requestAccion.data.actuaciones[0].fechaInicial;
+        const fechaFinal = requestAccion.data.actuaciones[0].fechaFinal;
+        const anotacion = requestAccion.data.actuaciones[0].anotacion;
+
+        if (fechaInicial !== null) {
+          const doc = await Process.findById(_id);
+
+          let params = {
+            start: fechaInicial,
+            end: fechaFinal,
+            title: anotacion,
+            lawyer: doc.lawyer,
+            notification: true,
+            process: filingNumber
+          };
+          Event.create(params)
+            .then((event) => {
+              console.log('Evento Creado');
+            })
+            .catch((error) => {
+              console.log(error);
+            });
+        }
+
         const lawyerQuery = await Lawyer.findById(lawyer);
 
         sendEmail(
@@ -71,6 +96,30 @@ const requestCaso = async () => {
           `https://consultaprocesos.ramajudicial.gov.co:448/api/v2/Proceso/Actuaciones/${idProceso}?pagina=1`
         );
 
+        const fechaInicial = requestAccion.data.actuaciones[0].fechaInicial;
+        const fechaFinal = requestAccion.data.actuaciones[0].fechaFinal;
+        const anotacion = requestAccion.data.actuaciones[0].anotacion;
+
+        if (fechaInicial !== null) {
+          const doc = await Process.findById(_id);
+
+          let params = {
+            start: fechaInicial,
+            end: fechaFinal,
+            title: anotacion,
+            lawyer: doc.lawyer,
+            notification: true,
+            process: filingNumber
+          };
+          Event.create(params)
+            .then((event) => {
+              console.log('Evento Creado');
+            })
+            .catch((error) => {
+              console.log(error);
+            });
+        }
+
         const lawyerQuery = await Lawyer.findById(lawyer);
 
         sendEmail(
@@ -88,6 +137,36 @@ const requestCaso = async () => {
           await doc.save();
         });
       }
+
+      // const idProceso = requestProceso.data.procesos[length].idProceso;
+      // const requestAccion = await axios.get(
+      //   `https://consultaprocesos.ramajudicial.gov.co:448/api/v2/Proceso/Actuaciones/${idProceso}?pagina=1`
+      // );
+
+      // const fechaInicial = requestAccion.data.actuaciones[1].fechaInicial;
+      // const fechaFinal = requestAccion.data.actuaciones[1].fechaFinal;
+      // const anotacion = requestAccion.data.actuaciones[1].anotacion;
+
+      // if (fechaInicial !== null) {
+      //   const doc = await Process.findById(_id);
+
+      //   let params = {
+      //     start: fechaInicial,
+      //     end: fechaFinal,
+      //     title: anotacion,
+      //     lawyer: doc.lawyer,
+      //     notification: true
+      //     process: filingNumber
+      //   };
+
+      //   Event.create(params)
+      //     .then((event) => {
+      //       console.log('Evento Creado');
+      //     })
+      //     .catch((error) => {
+      //       console.log(error);
+      //     });
+      // }
     } catch (error) {
       console.log('@ERROR ', filingNumber, error);
     }
