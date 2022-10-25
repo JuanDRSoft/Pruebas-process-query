@@ -25,6 +25,19 @@ async function create(req, res) {
     });
 }
 
+async function update(req, res) {
+  req.event = Object.assign(req.event, req.body);
+  req.event
+    .save()
+    .then((doc) => {
+      res.json(doc);
+    })
+    .catch((err) => {
+      console.log(err);
+      res.json(err);
+    });
+}
+
 function destroy(req, res) {
   req.event
     .remove()
@@ -48,4 +61,4 @@ function find(req, res, next) {
     });
 }
 
-module.exports = { findByLawyerAll, create, destroy, find };
+module.exports = { findByLawyerAll, create, destroy, find, update };
