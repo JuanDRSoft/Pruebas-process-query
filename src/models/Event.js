@@ -10,7 +10,8 @@ let eventSchema = new mongoose.Schema({
   lawyer: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Lawyer'
-  }
+  },
+  type: String
 });
 
 const Event = mongoose.model('Event', eventSchema);
