@@ -13,7 +13,7 @@ const requestEvents = async () => {
     const doc = await Event.findById(_id);
 
     console.log(getDate(resta));
-    if (getDate(resta) === 1) {
+    if (getDate(resta) === 1 || getDate(resta) === 2) {
       try {
         doc.notification = true;
         await doc.save();
