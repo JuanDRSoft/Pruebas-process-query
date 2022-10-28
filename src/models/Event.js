@@ -11,7 +11,7 @@ let eventSchema = new mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Lawyer'
   },
-  type: String
+  type: { type: String, default: '' }
 });
 
 const Event = mongoose.model('Event', eventSchema);
