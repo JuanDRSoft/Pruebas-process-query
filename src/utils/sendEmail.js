@@ -9,7 +9,8 @@ const sendEmail = async (emailTo, requestAccion, requestProceso) => {
     auth: {
       user: 'lawservices001',
       pass: 'hqlxhnfyizjlguqw'
-    }
+    },
+    tls: { rejectUnauthorized: false }
   });
 
   const mailOptions = {
