@@ -7,6 +7,7 @@ var logger = require('morgan');
 const mongoose = require('mongoose');
 var cors = require('cors');
 const dotenv = require('dotenv');
+var cron = require('node-cron');
 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
@@ -24,6 +25,7 @@ const billing = require('./src/routes/Billing');
 const payments = require('./src/routes/Payment');
 const ipn = require('./src/routes/IPN');
 const event = require('./src/routes/Event');
+const { requestEvents } = require('./src/utils/eventNotification');
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -63,6 +65,10 @@ app.use(function (err, req, res, next) {
 });
 
 // requestCaso();
+
+cron.schedule('* 4 * * * *', function () {
+  requestEvents();
+});
 
 mongoose.connect(
   'mongodb+srv://usr:usr@processquerydb.spacg.mongodb.net/ProcessQuery'
