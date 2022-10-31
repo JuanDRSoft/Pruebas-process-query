@@ -5,15 +5,15 @@ const requestEvents = async () => {
   const eventsData = await Event.find({});
 
   for (let i = 0; i < eventsData.length; i++) {
-    const { title, end, _id } = eventsData[i];
+    const { title, end, _id, start } = eventsData[i];
 
     console.log(i, title, end);
 
-    const resta = end - Date.now();
+    const resta = (start - Date.now()) / (1000 * 3600 * 24);
     const doc = await Event.findById(_id);
+    console.log(resta);
 
-    console.log(getDate(resta));
-    if (getDate(resta) === 1 || getDate(resta) === 2) {
+    if (resta < 2 && resta > 1) {
       try {
         doc.notification = true;
         await doc.save();
