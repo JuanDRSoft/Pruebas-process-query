@@ -66,7 +66,7 @@ app.use(function (err, req, res, next) {
 
 // requestCaso();
 
-cron.schedule('* 1 * * * *', function () {
+cron.schedule('59 * * * *', function () {
   requestEvents();
 });
 
