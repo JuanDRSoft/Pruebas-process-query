@@ -1,5 +1,6 @@
-const { getDate, getMonth, getYear } = require('date-fns');
 const Event = require('../models/Event');
+const Lawyer = require('../models/Lawyer');
+const { eventNotification } = require('./sendEmail');
 
 const requestEvents = async () => {
   const eventsData = await Event.find({});
@@ -35,4 +36,23 @@ const requestEvents = async () => {
   }
 };
 
-module.exports = { requestEvents };
+const requestEventsEmail = async () => {
+  const eventsData = await Event.find({});
+
+  for (let i = 0; i < eventsData.length; i++) {
+    const { lawyer, _id } = eventsData[i];
+
+    const lawyerInfo = await Lawyer.findById(lawyer);
+    const doc = await Event.findById(_id);
+
+    if (doc.notification) {
+      try {
+        eventNotification(lawyerInfo, doc);
+      } catch (error) {
+        console.log(error);
+      }
+    }
+  }
+};
+
+module.exports = { requestEvents, requestEventsEmail };

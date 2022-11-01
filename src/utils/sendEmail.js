@@ -1,6 +1,7 @@
 const nodemailer = require('nodemailer');
 const { template } = require('../html/template');
 const { templatePassword } = require('../html/password/template');
+const { templateEvents } = require('../html/eventNotifcation/template');
 
 const sendEmail = async (emailTo, requestAccion, requestProceso) => {
   const { llaveProceso, fechaProceso } = requestProceso;
@@ -56,7 +57,37 @@ const forgotPasswordEmail = async (emailTo, lawyer) => {
   });
 };
 
+const eventNotification = async (lawyer, doc) => {
+  const { email } = lawyer;
+  const { title } = doc;
+
+  const transporter = nodemailer.createTransport({
+    service: 'gmail',
+    auth: {
+      user: 'solutioprocess',
+      pass: 'gmepudoqeqhqcawl'
+    },
+    tls: { rejectUnauthorized: false }
+  });
+
+  const mailOptions = {
+    from: 'solutioprocess@gmail.com',
+    to: email,
+    subject: `Notificación de evento: ${title}`,
+    html: templateEvents(doc)
+  };
+
+  transporter.sendMail(mailOptions, function (error, info) {
+    if (error) {
+      console.log(error);
+    } else {
+      console.log('Email sent: ' + info.response);
+    }
+  });
+};
+
 module.exports = {
   sendEmail,
-  forgotPasswordEmail
+  forgotPasswordEmail,
+  eventNotification
 };
