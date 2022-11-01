@@ -25,7 +25,10 @@ const billing = require('./src/routes/Billing');
 const payments = require('./src/routes/Payment');
 const ipn = require('./src/routes/IPN');
 const event = require('./src/routes/Event');
-const { requestEvents } = require('./src/utils/eventNotification');
+const {
+  requestEvents,
+  requestEventsEmail
+} = require('./src/utils/eventNotification');
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -68,6 +71,10 @@ app.use(function (err, req, res, next) {
 
 cron.schedule('59 * * * *', function () {
   requestEvents();
+});
+
+cron.schedule('* 6,12,18 * * *', function () {
+  requestEventsEmail();
 });
 
 mongoose.connect(
