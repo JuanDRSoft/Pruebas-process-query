@@ -8,7 +8,7 @@ const { sendEmail } = require('./sendEmail');
 
 const requestCaso = async () => {
   const processDataData = await Process.find({});
-  const processData = processDataData.slice(0, 440);
+  const processData = processDataData.slice(0, 450);
 
   for (let i = 0; i < processData.length; i++) {
     if (processData.length - 1 <= i) {
@@ -45,19 +45,29 @@ const requestCaso = async () => {
           `https://consultaprocesos.ramajudicial.gov.co:448/api/v2/Proceso/Actuaciones/${idProceso}?pagina=1`
         );
 
-        const fechaInicial = requestAccion.data.actuaciones[0].fechaInicial;
-        const fechaFinal = requestAccion.data.actuaciones[0].fechaFinal;
         const anotacion = requestAccion.data.actuaciones[0].anotacion;
+        const actuacion = requestAccion.data.actuaciones[0].actuacion;
+        const audiencia = 'audiencia';
 
-        if (fechaInicial !== null) {
+        if (
+          actuacion
+            .toLowerCase()
+            .replace(/\s+/g, '')
+            .includes(audiencia.toLowerCase().replace(/\s+/g, '')) ||
+          anotacion
+            .toLowerCase()
+            .replace(/\s+/g, '')
+            .includes(audiencia.toLowerCase().replace(/\s+/g, ''))
+        ) {
+          const audiencia = (actuacion + '.', anotacion);
           const doc = await Process.findById(_id);
 
           let params = {
-            start: fechaInicial,
-            end: fechaFinal,
-            title: anotacion,
+            start: new Date(),
+            end: new Date(),
+            title: audiencia,
             lawyer: doc.lawyer,
-            notification: true,
+            notification: false,
             process: filingNumber
           };
           Event.create(params)
@@ -96,19 +106,29 @@ const requestCaso = async () => {
           `https://consultaprocesos.ramajudicial.gov.co:448/api/v2/Proceso/Actuaciones/${idProceso}?pagina=1`
         );
 
-        const fechaInicial = requestAccion.data.actuaciones[0].fechaInicial;
-        const fechaFinal = requestAccion.data.actuaciones[0].fechaFinal;
         const anotacion = requestAccion.data.actuaciones[0].anotacion;
+        const actuacion = requestAccion.data.actuaciones[0].actuacion;
+        const audiencia = 'audiencia';
 
-        if (fechaInicial !== null) {
+        if (
+          actuacion
+            .toLowerCase()
+            .replace(/\s+/g, '')
+            .includes(audiencia.toLowerCase().replace(/\s+/g, '')) ||
+          anotacion
+            .toLowerCase()
+            .replace(/\s+/g, '')
+            .includes(audiencia.toLowerCase().replace(/\s+/g, ''))
+        ) {
+          const audiencia = (actuacion + '.', anotacion);
           const doc = await Process.findById(_id);
 
           let params = {
-            start: fechaInicial,
-            end: fechaFinal,
-            title: anotacion,
+            start: new Date(),
+            end: new Date(),
+            title: audiencia,
             lawyer: doc.lawyer,
-            notification: true,
+            notification: false,
             process: filingNumber
           };
           Event.create(params)
@@ -137,36 +157,6 @@ const requestCaso = async () => {
           await doc.save();
         });
       }
-
-      // const idProceso = requestProceso.data.procesos[length].idProceso;
-      // const requestAccion = await axios.get(
-      //   `https://consultaprocesos.ramajudicial.gov.co:448/api/v2/Proceso/Actuaciones/${idProceso}?pagina=1`
-      // );
-
-      // const fechaInicial = requestAccion.data.actuaciones[1].fechaInicial;
-      // const fechaFinal = requestAccion.data.actuaciones[1].fechaFinal;
-      // const anotacion = requestAccion.data.actuaciones[1].anotacion;
-
-      // if (fechaInicial !== null) {
-      //   const doc = await Process.findById(_id);
-
-      //   let params = {
-      //     start: fechaInicial,
-      //     end: fechaFinal,
-      //     title: anotacion,
-      //     lawyer: doc.lawyer,
-      //     notification: true
-      //     process: filingNumber
-      //   };
-
-      //   Event.create(params)
-      //     .then((event) => {
-      //       console.log('Evento Creado');
-      //     })
-      //     .catch((error) => {
-      //       console.log(error);
-      //     });
-      // }
     } catch (error) {
       console.log('@ERROR ', filingNumber, error);
     }
