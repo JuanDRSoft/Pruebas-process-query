@@ -73,7 +73,7 @@ cron.schedule('59 * * * *', function () {
   requestEvents();
 });
 
-cron.schedule('* 6,12,18 * * *', function () {
+cron.schedule('59 6,12,18 * * *', function () {
   requestEventsEmail();
 });
 
