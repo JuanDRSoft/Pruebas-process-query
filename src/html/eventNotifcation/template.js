@@ -415,7 +415,7 @@ const templateEvents = (
                                         font-size: 12px;
                                       "
                                     >
-                                      Reestablecimiento de contraseña
+                                      Notificación de evento
                                     </p>
                                   </td>
                                 </tr>
@@ -778,7 +778,7 @@ const templateEvents = (
                                         color: #333333;
                                       "
                                     >
-                                      Reestablecimiento De Contraseña<br />
+                                      Notificación De Evento <br />
                                     </h2>
                                   </td>
                                 </tr>
