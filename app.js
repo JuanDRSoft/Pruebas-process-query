@@ -25,6 +25,7 @@ const billing = require('./src/routes/Billing');
 const payments = require('./src/routes/Payment');
 const ipn = require('./src/routes/IPN');
 const event = require('./src/routes/Event');
+const collaborator = require('./src/routes/Collaborator');
 const {
   requestEvents,
   requestEventsEmail
@@ -47,6 +48,7 @@ app.use('/billing', billing);
 app.use('/payments', payments);
 app.use('/IPN', ipn);
 app.use('/event', event);
+app.use('/collaborator', collaborator);
 
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
