@@ -1,10 +1,11 @@
 const axios = require('axios');
 const generateRandomString = require('../helpers/codePassword');
+const Collaborator = require('../models/Collaborator');
 const Lawyer = require('../models/Lawyer');
 const { forgotPasswordEmail } = require('../utils/sendEmail');
 const helpers = require('./helpers');
 
-const validParams = ['name', 'phone', 'email', 'uid'];
+const validParams = ['name', 'phone', 'email', 'uid', 'role'];
 
 function find(req, res, next) {
   Lawyer.findById(req.params.id)
@@ -17,7 +18,8 @@ function find(req, res, next) {
     });
 }
 function findByEmail(req, res, next) {
-  let { email, uid } = helpers.buildParams(validParams, req.body);
+  let { email, uid, role } = helpers.buildParams(validParams, req.body);
+
   Lawyer.findOne({ email: email, uid: uid })
     .then((lawyer) => {
       req.lawyer = lawyer;
