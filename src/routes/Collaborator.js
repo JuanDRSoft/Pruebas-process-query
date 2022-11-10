@@ -8,6 +8,7 @@ router.route('/').post(CollaboratorController.create);
 
 router
   .route('/:id')
+  .get(CollaboratorController.find, CollaboratorController.show)
   .put(CollaboratorController.find, CollaboratorController.update)
   .delete(CollaboratorController.find, CollaboratorController.destroy);
 
