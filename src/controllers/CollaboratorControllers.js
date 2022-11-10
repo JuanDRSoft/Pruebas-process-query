@@ -33,6 +33,10 @@ function findByEmail(req, res, next) {
     });
 }
 
+function show(req, res) {
+  res.json(req.collaborator);
+}
+
 async function create(req, res, next) {
   let params = req.body;
 
@@ -78,5 +82,6 @@ module.exports = {
   update,
   destroy,
   find,
-  findByEmail
+  findByEmail,
+  show
 };
