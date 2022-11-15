@@ -13,4 +13,6 @@ router
 
 router.route('/all/bylawyer').get(auth, EventController.findByLawyerAll);
 
+router.route('/all/byCollaborator/:id').get(EventController.findByCollaborator);
+
 module.exports = router;
