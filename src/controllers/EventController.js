@@ -11,6 +11,17 @@ function findByLawyerAll(req, res, next) {
     });
 }
 
+function findByCollaborator(req, res, next) {
+  Event.find({ lawyer: req.params.id })
+    .sort([['startDate', +1]])
+    .then((doc) => {
+      res.json(doc);
+    })
+    .catch((err) => {
+      res.json(err);
+    });
+}
+
 async function create(req, res) {
   let params = req.body;
 
@@ -61,4 +72,11 @@ function find(req, res, next) {
     });
 }
 
-module.exports = { findByLawyerAll, create, destroy, find, update };
+module.exports = {
+  findByLawyerAll,
+  create,
+  destroy,
+  find,
+  update,
+  findByCollaborator
+};
