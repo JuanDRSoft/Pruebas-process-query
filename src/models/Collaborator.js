@@ -16,7 +16,10 @@ let collaboratorShema = new mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Lawyer'
   },
-  role: { type: String, default: 'Read' }
+  role: { type: String, default: 'Read' },
+  process: { type: Boolean, default: true },
+  events: { type: Boolean, default: true },
+  membership: { type: Boolean, default: true }
 });
 
 const Collaborator = mongoose.model('Collaborator', collaboratorShema);
