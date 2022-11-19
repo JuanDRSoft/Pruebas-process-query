@@ -3,6 +3,7 @@ const Lawyer = require('../models/Lawyer');
 const helpers = require('./helpers');
 const axios = require('axios');
 const { rawListeners } = require('../models/Process');
+const Collaborator = require('../models/Collaborator');
 
 const validParams = [
   'filingNumber',
@@ -116,9 +117,14 @@ function findByLawyer(req, res, next) {
   );
 }
 
-function findByLawyerCount(req, res, next) {
+async function findByLawyerCount(req, res, next) {
   let process = 0;
   let tracking = 0;
+  let collab = 0;
+
+  const collaborator = await Collaborator.find({ lawyer: req.usuario });
+
+  for (let i = 0; i < collaborator.length; i++) {}
 
   Process.count({ lawyer: req.usuario }).then((result) => {
     process = result;
@@ -130,6 +136,22 @@ function findByLawyerCount(req, res, next) {
     });
   });
 }
+
+function findByCollaboratorCount(req, res) {
+  let process = 0;
+  let tracking = 0;
+
+  Process.count({ lawyer: req.params.usuario }).then((result) => {
+    process = result;
+
+    Process.count({ lawyer: req.usuario, state: true }).then((resultActive) => {
+      tracking = resultActive;
+
+      res.json([process, tracking, process - tracking]);
+    });
+  });
+}
+
 function index(req, res) {
   const options = {
     page: 1,
@@ -320,5 +342,6 @@ module.exports = {
   findLink,
   updateLink,
   deleteLink,
-  findOneLawyer
+  findOneLawyer,
+  findByCollaboratorCount
 };
