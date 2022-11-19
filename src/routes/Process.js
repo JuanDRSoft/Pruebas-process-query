@@ -23,6 +23,8 @@ router
 
 router.route('/count/bylawyer').get(auth, ProcessController.findByLawyerCount);
 
+router.route('/count/:usuario').get(ProcessController.findByCollaboratorCount);
+
 router.route('/updateState/:id').get(ProcessController.updateState);
 
 router.route('/id/:id').get(ProcessController.fetchProcessFn);
