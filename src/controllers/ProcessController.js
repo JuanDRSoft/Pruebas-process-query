@@ -124,7 +124,13 @@ async function findByLawyerCount(req, res, next) {
 
   const collaborator = await Collaborator.find({ lawyer: req.usuario });
 
-  for (let i = 0; i < collaborator.length; i++) {}
+  for (let i = 0; i < collaborator.length; i++) {
+    const { _id } = collaborator[i];
+
+    Process.count({ lawyer: _id }).then((result) => {
+      collab += result;
+    });
+  }
 
   Process.count({ lawyer: req.usuario }).then((result) => {
     process = result;
@@ -132,7 +138,7 @@ async function findByLawyerCount(req, res, next) {
     Process.count({ lawyer: req.usuario, state: true }).then((resultActive) => {
       tracking = resultActive;
 
-      res.json([process, tracking, process - tracking]);
+      res.json([process + collab, tracking, process - tracking]);
     });
   });
 }
