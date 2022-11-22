@@ -35,7 +35,8 @@ let processShema = new mongoose.Schema({
     type: Boolean,
     default: false
   },
-  link: [linkSchema]
+  link: [linkSchema],
+  assigned: String
 });
 
 processShema.plugin(mongoosePaginate);
