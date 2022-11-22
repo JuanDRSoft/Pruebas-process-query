@@ -18,7 +18,8 @@ const validParams = [
   'notificationWeb',
   'notificationHome',
   'ciudad',
-  'link'
+  'link',
+  'assigned'
 ];
 
 function find(req, res, next) {
