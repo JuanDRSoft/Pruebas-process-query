@@ -36,7 +36,9 @@ let processShema = new mongoose.Schema({
     default: false
   },
   link: [linkSchema],
-  assigned: String
+  assigned: String,
+  notificationDays: { type: Boolean, default: false },
+  notificationDaysWeb: { type: Boolean, default: false }
 });
 
 processShema.plugin(mongoosePaginate);
