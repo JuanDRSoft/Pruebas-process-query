@@ -2,14 +2,15 @@ const nodemailer = require('nodemailer');
 const { template } = require('../html/template');
 const { templatePassword } = require('../html/password/template');
 const { templateEvents } = require('../html/eventNotifcation/template');
+const { templateDays } = require('../html/daysNotification/template');
 
 const sendEmail = async (emailTo, requestAccion, requestProceso) => {
   const { llaveProceso, fechaProceso } = requestProceso;
   const transporter = nodemailer.createTransport({
     service: 'gmail',
     auth: {
-      user: 'lawservices001',
-      pass: 'hqlxhnfyizjlguqw'
+      user: 'solutioprocess',
+      pass: 'gmepudoqeqhqcawl'
     },
     tls: { rejectUnauthorized: false }
   });
@@ -86,8 +87,37 @@ const eventNotification = async (lawyer, doc) => {
   });
 };
 
+const daysNotification = async (lawyer, processData, whithoutAction) => {
+  const { filingNumber } = processData;
+
+  const transporter = nodemailer.createTransport({
+    service: 'gmail',
+    auth: {
+      user: 'solutioprocess',
+      pass: 'gmepudoqeqhqcawl'
+    },
+    tls: { rejectUnauthorized: false }
+  });
+
+  const mailOptions = {
+    from: 'solutioprocess@gmail.com',
+    to: lawyer,
+    subject: `Advertencia De Inactividad En Proceso: ${filingNumber}`,
+    html: templateDays(processData, whithoutAction)
+  };
+
+  transporter.sendMail(mailOptions, function (error, info) {
+    if (error) {
+      console.log(error);
+    } else {
+      console.log('Email sent: ' + info.response);
+    }
+  });
+};
+
 module.exports = {
   sendEmail,
   forgotPasswordEmail,
-  eventNotification
+  eventNotification,
+  daysNotification
 };

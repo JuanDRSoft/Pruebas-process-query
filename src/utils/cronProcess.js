@@ -4,18 +4,20 @@ const Event = require('../models/Event');
 
 const axios = require('axios');
 
-const { sendEmail } = require('./sendEmail');
+const { sendEmail, daysNotification } = require('./sendEmail');
 
 const requestCaso = async () => {
   const processDataData = await Process.find({});
-  const processData = processDataData.slice(0, 450);
+  const processData = processDataData.slice(0, 480);
+  // const processData = processDataData.slice(0, 2);
 
   for (let i = 0; i < processData.length; i++) {
     if (processData.length - 1 <= i) {
       console.log('---------ULTIMO PROCESO---------');
     }
 
-    const { filingNumber, lastUpdateDate, lawyer, _id } = processData[i];
+    const { filingNumber, lastUpdateDate, lawyer, _id, notificationDays } =
+      processData[i];
     try {
       const requestProceso = await axios.get(
         `https://consultaprocesos.ramajudicial.gov.co:448/api/v2/Procesos/Consulta/NumeroRadicacion?numero=${filingNumber}&SoloActivos=false&pagina=1`
@@ -35,6 +37,24 @@ const requestCaso = async () => {
       //   new Date(lastUpdateDate.toISOString().slice(0, 10)),
       //   filingNumber
       // );
+
+      const whithoutAction =
+        (Date.now() - lastUpdateDate) / (1000 * 60 * 60 * 24);
+
+      if (whithoutAction > 365 && notificationDays !== true) {
+        const lawyerQuery = await Lawyer.findById(lawyer);
+
+        daysNotification(
+          lawyerQuery.email,
+          processData[i],
+          whithoutAction
+        ).then(async (result) => {
+          const doc = await Process.findById(_id);
+          doc.notificationDays = true;
+          doc.notificationDaysWeb = true;
+          await doc.save();
+        });
+      }
 
       console.log(i, lastUpdateDate, filingNumber, fechaDataUpdate);
 
