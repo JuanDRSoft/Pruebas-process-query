@@ -69,7 +69,7 @@ app.use(function (err, req, res, next) {
   res.render('error');
 });
 
-requestCaso();
+// requestCaso();
 
 cron.schedule('59 * * * *', function () {
   requestEvents();
