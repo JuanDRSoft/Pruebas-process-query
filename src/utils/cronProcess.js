@@ -41,6 +41,19 @@ const requestCaso = async () => {
       const whithoutAction =
         (Date.now() - lastUpdateDate) / (1000 * 60 * 60 * 24);
 
+      if (
+        whithoutAction > 182 &&
+        whithoutAction < 365 &&
+        notificationDays !== true
+      ) {
+        const doc = await Process.findById(_id);
+        doc.notificationDays = true;
+        doc.notificationDaysWeb = true;
+        await doc.save();
+
+        console.log('6 meses');
+      }
+
       if (whithoutAction > 365 && notificationDays !== true) {
         const lawyerQuery = await Lawyer.findById(lawyer);
 
