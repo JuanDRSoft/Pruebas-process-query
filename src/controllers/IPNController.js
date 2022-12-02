@@ -40,7 +40,7 @@ async function create(req, res, next) {
         };
 
         const payment = await axios.post(
-          'https://https://solutio-juandrsoft.koyeb.app/payments',
+          'https://solutio-juandrsoft.koyeb.app/payments',
           //'http://localhost:7001/payments',
           bodyData
         );
