@@ -44,6 +44,17 @@ function findByFilingNumber(req, res, next) {
       next(err);
     });
 }
+
+function findByCollaborator(req, res, next) {
+  Process.find({ lawyer: req.params.id })
+    .then((process) => {
+      res.json(process);
+    })
+    .catch((err) => {
+      next(err);
+    });
+}
+
 function findOne(req, res, next) {
   Process.findOne({ filingNumber: req.params.id })
     .then((process) => {
@@ -352,5 +363,6 @@ module.exports = {
   updateLink,
   deleteLink,
   findOneLawyer,
-  findByCollaboratorCount
+  findByCollaboratorCount,
+  findByCollaborator
 };
