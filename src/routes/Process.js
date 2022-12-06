@@ -34,6 +34,10 @@ router.route('/update/state').get(ProcessController.updateStateAll);
 router.route('/all/bylawyer').get(auth, ProcessController.findByLawyerAll);
 
 router
+  .route('/all/byCollaborator/:id')
+  .get(ProcessController.findByCollaborator);
+
+router
   .route('/all/bylawyer/home/:email')
   .get(ProcessController.processbyLawyerHome);
 
